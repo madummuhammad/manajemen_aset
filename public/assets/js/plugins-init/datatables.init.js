@@ -46,7 +46,8 @@ let dataSet = [
     var table = $('#example').DataTable({
         createdRow: function ( row, data, index ) {
            $(row).addClass('selected')
-        } 
+        },
+        "ordering":false
     });
       
     table.on('click', 'tbody tr', function() {

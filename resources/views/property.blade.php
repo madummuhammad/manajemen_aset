@@ -11,7 +11,7 @@
                     <div class="row page-titles mx-0">
                         <div class="col-sm-6 p-md-0">
                             <div class="welcome-text">
-                                <h4>Hi, welcome back!</h4>
+                                <h4>Hi, {{auth()->user()->nama}}!</h4>
                                 <span class="ml-1">Datatable</span>
                             </div>
                         </div>
@@ -35,6 +35,7 @@
                                         <table id="example" class="display" style="min-width: 845px">
                                             <thead>
                                                 <tr>
+                                                    
                                                     <th>Kode Property</th>
                                                     <th>Nama Aset</th>
                                                     <th>Harga Per Satuan</th>
@@ -48,7 +49,7 @@
                                                 @foreach($asset as $value)
                                                 <tr>
                                                     <td>{{$value->kode_property}}</td>
-                                                    <td>{{$value->nama_aset}}</td>
+                                                    <td>{{$value->nama_property}}</td>
                                                     <td>{{$value->harga_satuan}}/{{$value->satuan}}</td>
                                                     <td>{{$value->kondisi}}</td>
                                                     <td>{{$value->keterangan}}</td>

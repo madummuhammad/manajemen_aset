@@ -46,7 +46,7 @@ class PropertyController extends Controller
     {
         $data=[
             'kode_property'=>$request->kode_property,
-            'nama_aset'=>$request->nama_property,
+            'nama_property'=>$request->nama_property,
             'harga_satuan'=>$request->harga_satuan,
             'id_grup_aset'=>$request->id_grup_aset,
             'id_user'=>1,
@@ -92,9 +92,21 @@ class PropertyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data=[
+            'nama_property'=>$request->nama_property,
+            'harga_satuan'=>$request->harga_satuan,
+            'id_grup_aset'=>$request->id_grup_aset,
+            'id_user'=>1,
+            'kondisi'=>$request->kondisi,
+            'keterangan'=>$request->keterangan,
+            'tgl_input'=>date('d/m/Y'),
+            'satuan'=>$request->satuan
+        ];
+
+        DB::table('property')->where('kode_property',$request->kode_property)->update($data);
+        return redirect('property/show/'.$request->id_grup_aset.'/'.$request->kode_property);
     }
 
     /**

@@ -11,7 +11,7 @@
                     <div class="row page-titles mx-0">
                         <div class="col-sm-6 p-md-0">
                             <div class="welcome-text">
-                                <h4>Hi, welcome back!</h4>
+                                <h4>Hi, {{auth()->user()->nama}}!</h4>
                             </div>
                         </div>
                         <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="basic-form">
-                                        <form method="POST" action="{{url('property/show/{{}}')}}">
+                                        <form method="POST" action="{{url('property/show')}}">
                                             @csrf
                                             @method('patch');
                                             <div class="form-row">
@@ -42,7 +42,7 @@
                                                 <input type="text" name="id_grup_aset" value="{{Request::segment(3)}}" hidden>
                                                 <div class="form-group col-md-6">
                                                     <label>Nama Property {{$nama_grup->nama_grup}}</label>
-                                                    <input type="text" class="form-control" placeholder="" name="nama_property" value="{{$property->nama_aset}}">
+                                                    <input type="text" class="form-control" placeholder="" name="nama_property" value="{{$property->nama_property}}">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>Harga Satuan</label>

@@ -11,7 +11,7 @@
                     <div class="row page-titles mx-0">
                         <div class="col-sm-6 p-md-0">
                             <div class="welcome-text">
-                                <h4>Selamat Datang, Muhammad Ma'dum</h4>
+                                <h4>Selamat Datang, {{auth()->user()->nama}}</h4>
                                 <p class="mb-0">Kelola Asetmu</p>
                             </div>
                         </div>

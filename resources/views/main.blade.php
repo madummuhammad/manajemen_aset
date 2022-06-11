@@ -13,6 +13,8 @@
     <link href="{{asset('assets/vendor/chartist/css/chartist.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('assets/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/icons/fontawesome/css/all.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/vendor/select2/css/select2.min.css')}}">
 
 </head>
 
@@ -43,9 +45,10 @@
             ***********************************-->
             <div class="nav-header">
                 <a href="index.html" class="brand-logo">
-                    <img class="logo-abbr" src="{{url('assets')}}/images/logo.png" alt="">
-                    <img class="logo-compact" src="{{url('assets')}}/images/logo-text.png" alt="">
-                    <img class="brand-title" src="{{url('assets')}}/images/logo-text.png" alt="">
+                    Mts Attaqwa Jatingarang
+                    <!-- <img class="logo-abbr" src="{{url('assets')}}/images/logo.png" alt=""> -->
+                    <!-- <img class="logo-compact" src="{{url('assets')}}/images/logo-text.png" alt=""> -->
+                    <!-- <img class="brand-title" src="{{url('assets')}}/images/logo-text.png" alt=""> -->
                 </a>
 
                 <div class="nav-control">
@@ -152,10 +155,13 @@
                                                 <i class="icon-envelope-open"></i>
                                                 <span class="ml-2">Inbox </span>
                                             </a>
-                                            <a href="./page-login.html" class="dropdown-item">
-                                                <i class="icon-key"></i>
-                                                <span class="ml-2">Logout </span>
-                                            </a>
+                                            <form action="/logout" method="POST">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="icon-key"></i>
+                                                    <span class="ml-2">Logout</span>
+                                                </button>
+                                            </form>
                                         </div>
                                     </li>
                                 </ul>
@@ -201,8 +207,8 @@
                         <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                             class="icon icon-chart-bar-33"></i><span class="nav-text">Laporan</span></a>
                             <ul aria-expanded="false">
-                                <li><a href="./chart-flot.html">Berita Acara Mutasi</a></li>
-                                <li><a href="./chart-flot.html">Berita Acara Penghapusan</a></li>
+                                <li><a href="{{url('inventory/mutasi')}}">Mutasi</a></li>
+                                <li><a href="./chart-flot.html">Penghapusan</a></li>
                                 <li><a href="./chart-flot.html">Laporan Aset</a></li>
                             </ul>
                         </li>
@@ -269,6 +275,94 @@
         <!-- Datatable -->
         <script src="{{asset('assets/vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
         <script src="{{asset('assets/js/plugins-init/datatables.init.js')}}"></script>
+        <script src="{{asset('assets/icons/fontawesome/js/all.js')}}"></script>
+
+        <script src="{{asset('assets/vendor/select2/js/select2.full.min.js')}}"></script>
+        <script src="{{asset('assets/js/plugins-init/select2-init.js')}}"></script>
+        <script>
+
+            $('.main-checkbox').on('click',function(){
+                if (this.checked) {
+                    $('.inventory-check').prop('checked',true);
+                } else {
+                    $('.inventory-check').prop('checked',false);
+                }
+            })
+
+            $(".modal-footer #mutasi-inventory").on('click',function(){
+                if ($(".inventory-check").is(':checked')) {
+                    var inventoryCheck = $(".inventory-check:checked");
+                    var mutasinama=$(".mutasi-form [name=nama]").val();
+                    var mutasilokasi=$(".mutasi-form [name=lokasi").val();
+                    var mutasideskripsi=$(".mutasi-form [name=deskripsi").val();
+                    var id_mutasi=$(".mutasi-form [name=id_mutasi]").val();
+                    var csrf=$('input[name=_token]').val();
+                    
+
+                    $.ajax({
+                        url: "{{url('inventory/mutasi')}}",
+                        type:'POST',
+                        data:{
+                            nama:mutasinama,
+                            lokasi:mutasilokasi,
+                            deskripsi:mutasideskripsi,
+                            id_mutasi:id_mutasi,
+                            _token:csrf
+                        },
+                        success: function(e){
+                            for (let i = 0; i < inventoryCheck.length; i++) {
+                                var kode_inventory=$(inventoryCheck[i]).val();
+                                $.ajax({
+                                    url: "{{url('inventory/transaksi_mutasi')}}",
+                                    type:'POST',
+                                    data:{
+                                        id_mutasi:id_mutasi,
+                                        kode_inventory:kode_inventory,
+                                        _token:csrf
+                                    },
+                                    success: function(e){
+                                        setTimeout(function (){
+                                            window.location.href="{{url('inventory/mutasi')}}"+'/'+{{Request::segment(2)}}+'/'+id_mutasi;
+                                        }, 100);
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                }
+            })
+            // for (let i = 0; i < button_modal.length; i++) {
+            //     button_modal[i].onclick = function () {
+            //         var project=$(this).data('project');
+            //         var id=$(this).data('id');
+            //         var status = $(this).val();
+            //         var method = '_post';
+            //         var csrf=$('input[name=token]').val(); 
+            //         $.ajax({
+            //             url: "",
+            //             type:'POST',
+            //             data:{
+            //                 id:id,
+            //                 applied:status,
+            //                 _post:method,
+            //                 csrf_test_name:csrf
+            //             },
+            //             success: function(e){
+            //                 Swal.fire({    
+            //                     icon: 'success',
+            //                     title: 'Berhasil Dikonfirmasi',
+            //                     showConfirmButton: false,
+            //                     timer: 1000
+            //                 });
+            //                 setTimeout(function (){
+            //                     window.location.href=""+project;
+            //                 }, 1000);
+            //             }
+            //         });
+            //     }
+            // }
+        </script>
 
     </body>
 
